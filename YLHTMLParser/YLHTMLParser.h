@@ -10,6 +10,8 @@
 
 @interface YLHTMLParser : NSObject
 
++ (YLHTMLParser*)sharedParser;
+
 - (NSMutableAttributedString*)attributedStringByProcessingHTMLString:(NSString*)string withBaseFont:(UIFont*)font;
 
 @end

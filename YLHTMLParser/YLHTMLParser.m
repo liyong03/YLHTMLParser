@@ -42,6 +42,16 @@ typedef NS_ENUM(NSUInteger, YLHTMLTag) {
     UIFont* _baseFont;
 }
 
++ (YLHTMLParser*)sharedParser {
+    static YLHTMLParser* sharedParser = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedParser = [[YLHTMLParser alloc] init];
+    });
+    
+    return sharedParser;
+}
+
 - (id)init
 {
     self = [super init];
