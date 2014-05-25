@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "YLHTMLParser"
-  s.version      = "0.1"
+  s.version      = "0.11"
   s.summary      = "HTML parser for OHAttributedLabel."
   s.homepage     = "https://github.com/liyong03/YLHTMLParser.git"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
