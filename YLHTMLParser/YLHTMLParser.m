@@ -67,6 +67,7 @@ typedef NS_ENUM(NSUInteger, YLHTMLTag) {
     if (font)
         _baseFont = font;
     
+    // this is to make the entire string in body, for making sure it could be parsed correctly.
     NSString* pString = [NSString stringWithFormat:@"<body>%@</body>", string];
     NSXMLParser* parser = [[NSXMLParser alloc] initWithData:[pString dataUsingEncoding:NSUTF8StringEncoding]];
     parser.delegate = self;
@@ -76,19 +77,21 @@ typedef NS_ENUM(NSUInteger, YLHTMLTag) {
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
-    NSLog(@"didStartElement: %@", elementName);
     if ([elementName isEqualToString:@"a"]) {
+        // link
         LinkElementObj* obj = [[LinkElementObj alloc] init];
         obj.elementTag = YLHTMLLink;
         obj.url = [NSURL URLWithString:attributeDict[@"href"]];
         [_elementStack addObject:obj];
     }
     else if ([elementName isEqualToString:@"b"] || [elementName isEqualToString:@"strong"]) {
+        // bold
         ElementObj* obj = [[ElementObj alloc] init];
         obj.elementTag = YLHTMLBold;
         [_elementStack addObject:obj];
     }
     else if ([elementName isEqualToString:@"i"]) {
+        // italic
         ElementObj* obj = [[ElementObj alloc] init];
         obj.elementTag = YLHTMLItalic;
         [_elementStack addObject:obj];
@@ -96,12 +99,10 @@ typedef NS_ENUM(NSUInteger, YLHTMLTag) {
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-    NSLog(@"didEndElement: %@", elementName);
     [_elementStack removeLastObject];
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    NSLog(@"foundCharacters: %@", string);
     NSMutableAttributedString* attributedStr = [[NSMutableAttributedString alloc] initWithString:string];
     [attributedStr setFont:_baseFont];
     
